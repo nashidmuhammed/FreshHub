@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+   {% block content %}
+    <title>FreshHub-Account</title>
+	  <style>
+		  .red{
+		  color:red;
+		  }
+		  .green{
+		  color:green;
+		  }
+	  </style>
+  </head>
+  <body class="goto-here">
+		<div class="py-1 bg-primary">
+    	<div class="container">
+    		<div class="row no-gutters d-flex align-items-start align-items-center px-md-0">
+	    		<div class="col-lg-12 d-block">
+		    		<div class="row d-flex">
+		    			<div class="col-md pr-4 d-flex topper align-items-center">
+					    	<div class="icon mr-2 d-flex justify-content-center align-items-center"><span class="icon-phone2"></span></div>
+						    <span class="text">+ 1235 2355 98</span>
+					    </div>
+					    <div class="col-md pr-4 d-flex topper align-items-center">
+					    	<div class="icon mr-2 d-flex justify-content-center align-items-center"><span class="icon-paper-plane"></span></div>
+						    <span class="text">FreshHub@email.com</span>
+					    </div>
+					    <div class="col-md-5 pr-4 d-flex topper align-items-center text-lg-right">
+						    <span class="text">3-5 Business days delivery &amp; Free Returns</span>
+					    </div>
+				    </div>
+			    </div>
+		    </div>
+		  </div>
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+	    <div class="container">
+	      <a class="navbar-brand" href="{% url 'index' %}">FreshHub</a>
+	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+	        <span class="oi oi-menu"></span> Menu
+	      </button>
+
+	      <div class="collapse navbar-collapse" id="ftco-nav">
+	        <ul class="navbar-nav ml-auto">
+	          <li class="nav-item"><a href="{% url 'index' %}" class="nav-link">Home</a></li>
+	          <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Shop</a>
+              <div class="dropdown-menu" aria-labelledby="dropdown04">
+              	<a class="dropdown-item" href="{% url 'shop' %}">Shop</a>
+              	<a class="dropdown-item" href="{% url 'wishlist' %}">Wishlist</a>
+                <a class="dropdown-item" href="{% url 'cart' %}">Cart</a>
+                <a class="dropdown-item" href="{% url 'checkout' %}">Checkout</a>
+              </div>
+            </li>
+	          <li class="nav-item "><a href="{% url 'about' %}" class="nav-link">About</a></li>
+	          <li class="nav-item"><a href="blog" class="nav-link">Blog</a></li>
+	          <li class="nav-item active"><a href="{% url 'account' %}" class="nav-link">Account</a></li>
+	          <li class="nav-item cta cta-colored"><a href="{% url 'cart' %}" class="nav-link"><span class="icon-shopping_cart"></span>[{{counts}}]</a></li>
+
+	        </ul>
+	      </div>
+	    </div>
+	  </nav>
+    <!-- END nav -->
+
+    <div class="hero-wrap" style="background-image: url({% static 'images/bg_1.jpg' %});">
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
+          <div class="col-md-9 ftco-animate text-center">
+          	<p class="breadcrumbs"><span class="mr-2">Welcome</span></p>
+            <h1 class="mb-0 bread">{{usr.username}}</h1>
+          </div>
+        </div>
+      </div>
+		<div align="right">
+        <span ><a href="{% url 'wishlist' %}" class="btn btn-warning ">Wishlist</a></span>
+        <span ><a href="{% url 'cart' %}" class="btn btn-info ">Cart</a></span>
+        <span ><a href="{% url 'checkout' %}" class="btn btn-success ">Checkout</a></span>
+        <span ><a href="{% url 'logout' %}" class="btn btn-danger ">Logout</a></span>
+			</div>
+    </div>
+
+        <div class="row justify-content-center mb-5 pb-3">
+          <div class="col-md-7 heading-section ftco-animate text-center">
+          	<span class="subheading">Profile</span>
+              <p>Name : {{usr.name}}</p>
+             <p>Email : {{usr.email}}</p>
+              <p>Phone : {{usr.phone}}</p>
+			  <p id="click_user">Username : {{usr.username }} <a style="cursor: pointer;color:orange;"><span class="icon-edit"></span></a></p>
+			   <input id="user_change" style="display:none;" type="text" class="form-group" placeholder="Enter new Username"><span id="user_status" class=" "></span>
+			  <input style="display:none;" id="user_submit" type="button" value="Change" class="btn btn-info">
+			  <p id="click_change">Change Password : <a style="cursor: pointer;color:orange;">click here<span class="icon-edit"></span></a></p>
+			  <form id="change_form" style="display:none;" >
+				  <p class="btn-warning" id="error_msg"></p>
+			  <input id="old" type="text" class="form-group" placeholder="Old password" autofocus required><br>
+			  <input id="new1" type="password" class="form-group" placeholder="New password"  required><br>
+			  <input id="new2" type="password" class="form-group" placeholder="Retype new password"  required><br>
+				<input type="button" class="btn_pass btn btn-primary" value="Change">
+				</form>
+          </div>
+        </div>
+
+		<section class="ftco-section contact-section bg-light">
+      <div class="container">
+      	<div class="row d-flex mb-5 contact-info">
+          <div class="w-100"></div>
+            {% if add %}
+            {% for j in add %}
+          <div class="col-md-3 d-flex">
+          	<div class="info bg-white p-6">
+				<p id="a1"> {{j.name}} </p>
+	            <span><span>Address:</span> {{j.streetaddress}}</span>
+				<span>{{j.appartment}}</span>
+				<span>{{j.city}}</span>
+				<span>{{j.zip}}</span>
+				<span>Phone:{{j.phone}}</span>
+				<p></p>
+				<p><span ><a href="{% url 'delete_address' j.id %}#a1" class="btn btn-danger ">Delete</a></span>
+                <span ><a class="add_edit btn btn-info " data-catid="{{j.id}}">Edit</a></span>
+				<span>{% if j.default == 'default' %}<span style="color:green;">Default</span>{% else %}<a href="{% url 'set_default' j.id %}#a1" class="btn btn-warning ">Set Default</a>{% endif %}</span></p>
+	          </div>
+          </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+      </div>
+    </section>
+		<section class="ftco-section testimony-section">
+        <div class="row justify-content-center">
+        <div class="col-xl-7 ftco-animate">
+						<form action="{% url 'add_address' %}" class="bg-white p-5 contact-form" method="post">{% csrf_token %}
+							<h3 class="mb-4 billing-heading" id="c4">Add Address</h3>
+	          	<div class="row align-items-end">
+	          		<div class="col-md-6">
+	                <div class="form-group">
+	                	<label for="firstname">Firt Name</label>
+	                  <input type="text" id="firstname" name="fname" class="form-control" required>
+	                </div>
+	              </div>
+	              <div class="col-md-6">
+	                <div class="form-group">
+	                	<label for="lastname">Last Name</label>
+	                  <input type="text" id="lastname" name="lname" class="form-control" placeholder="">
+	                </div>
+                </div>
+                <div class="w-100"></div>
+		            <div class="col-md-12">
+		            	<div class="form-group">
+		            		<label for="country">State</label>
+		            		<div class="select-wrap">
+		                  <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+		                  <select name="state" id="country"   class="form-control">
+		                  	<option value="Kerala">Kerala</option>
+		                    <option value="Tamilnadu">Tamilnadu</option>
+		                    <option value="Karnadaka">Karnadaka</option>
+		                  </select>
+		                </div>
+		            	</div>
+		            </div>
+		            <div class="w-100"></div>
+		            <div class="col-md-6">
+		            	<div class="form-group">
+	                	<label for="streetaddress">Street Address</label>
+	                  <input type="text" id="streetaddress" name="streetaddress" class="form-control" placeholder="House number and street name" required>
+	                </div>
+		            </div>
+		            <div class="col-md-6">
+		            	<div class="form-group">
+	                  <input id="appartment" type="text" class="form-control" name="appno" placeholder="Appartment, suite, unit etc: (optional)">
+	                </div>
+		            </div>
+		            <div class="w-100"></div>
+		            <div class="col-md-6">
+		            	<div class="form-group">
+	                	<label for="towncity">Town / City</label>
+	                  <input type="text"id="towncity" name="town" class="form-control" required>
+	                </div>
+		            </div>
+		            <div class="col-md-6">
+		            	<div class="form-group">
+		            		<label for="postcodezip">Postcode / ZIP *</label>
+	                  <input type="text" id="postcodezip" name="zip" class="form-control" required>
+	                </div>
+		            </div>
+		            <div class="w-100"></div>
+		            <div class="col-md-6">
+	                <div class="form-group">
+	                	<label for="phone">Phone</label>
+	                  <input type="text" id="phone" name="phone" class="form-control" required>
+	                </div>
+	              </div>
+	              <div class="col-md-6">
+	                <div class="form-group">
+	                	<label for="emailaddress">Email Address</label>
+	                  <input type="text" id="emailaddress" name="email" class="form-control" placeholder="">
+	                </div>
+                </div>
+                	<div class="col-md-12">
+										<p id="btn_add" align="center"><input type="submit" value="Add Address" class="btn btn-primary py-3 px-4"></p>
+								<p style="display:none;" id="btn_edit" align="center"><input type="submit"  value="Edit Address" class="btn btn-info py-3 px-4"></p>
+					<input style="display:none;" id="idd" name="idd" type="text"  value="" >
+					</div>
+                </div>
+	          </form><!-- END -->
+					</div>
+        </div>
+		</section>
+
+
+
+
+    <footer class="ftco-footer ftco-section">
+      <div class="container">
+      	<div class="row">
+      		<div class="mouse">
+						<a href="#" class="mouse-icon">
+							<div class="mouse-wheel"><span class="ion-ios-arrow-up"></span></div>
+						</a>
+					</div>
+      	</div>
+        <div class="row mb-5">
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Vegefoods</h2>
+              <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia.</p>
+              <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
+                <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-5">
+              <h2 class="ftco-heading-2">Menu</h2>
+              <ul class="list-unstyled">
+                <li><a href="#" class="py-2 d-block">Shop</a></li>
+                <li><a href="#" class="py-2 d-block">About</a></li>
+                <li><a href="#" class="py-2 d-block">Journal</a></li>
+                <li><a href="#" class="py-2 d-block">Contact Us</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-4">
+             <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Help</h2>
+              <div class="d-flex">
+	              <ul class="list-unstyled mr-l-5 pr-l-3 mr-4">
+	                <li><a href="#" class="py-2 d-block">Shipping Information</a></li>
+	                <li><a href="#" class="py-2 d-block">Returns &amp; Exchange</a></li>
+	                <li><a href="#" class="py-2 d-block">Terms &amp; Conditions</a></li>
+	                <li><a href="#" class="py-2 d-block">Privacy Policy</a></li>
+	              </ul>
+	              <ul class="list-unstyled">
+	                <li><a href="#" class="py-2 d-block">FAQs</a></li>
+	                <li><a href="#" class="py-2 d-block">Contact</a></li>
+	              </ul>
+	            </div>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+            	<h2 class="ftco-heading-2">Have a Questions?</h2>
+            	<div class="block-23 mb-3">
+	              <ul>
+	                <li><span class="icon icon-map-marker"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
+	                <li><a href="#"><span class="icon icon-phone"></span><span class="text">+2 392 3929 210</span></a></li>
+	                <li><a href="#"><span class="icon icon-envelope"></span><span class="text">info@yourdomain.com</span></a></li>
+	              </ul>
+	            </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 text-center">
+
+            <p>
+						  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart color-danger" aria-hidden="true"></i> by <a target="_blank">FreshHub</a>
+
+						</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    
+  
+
+  <!-- loader -->
+<script type="text/javascript">
+    $('#click_change').click(function(){
+    $("#click_change").hide();
+    $("#change_form").show();
+    });
+</script>
+<script type="text/javascript">
+    $('#click_user').click(function(){
+    $("#click_user").hide();
+    $("#user_submit").show();
+    $("#user_change").show();
+    });
+</script>
+<script type="text/javascript">
+    $('#user_submit').click(function(){
+    var usr = $("#user_change").val();
+        $.ajax({
+            type: 'GET',
+            url: '{% url 'change_user' %}',
+            data: {usr:usr},
+            success: function(data) {
+            if(data == 0){
+            $('#user_status').removeClass("red btn icon-close");
+            $('#user_status').addClass("green btn icon-check");
+            window.location.href = "account"
+            }
+            else{
+            $('#user_status').removeClass("green btn icon-check");
+            $('#user_status').addClass("red btn icon-close");
+            }
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    });
+</script>
+<script type="text/javascript">
+    $('.btn_pass').click(function(){
+    console.log("readyyy");
+    var old = $("#old").val();
+    var new1 = $("#new1").val();
+    var new2 = $("#new2").val();
+        $.ajax({
+            type: 'GET',
+            url: '{% url 'change_pass' %}',
+            data: {old:old, new1:new1, new2:new2},
+            success: function(data) {
+            if(data == 0){
+            alert("Successfully changed!")
+            window.location.href = "account"
+            }
+            else if(data == 1){
+            $('#error_msg').html("Password couldn't match!");
+            }
+            else{
+            $('#error_msg').html("Incorrect Password!");
+            }
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    });
+</script>
+<script type="text/javascript">
+    $('.add_edit').click(function(){
+    console.log("readyyy");
+    var id = $(this).attr("data-catid");
+        $.ajax({
+            type: 'GET',
+            url: '{% url 'edit_address' %}',
+            data: {id:id},
+            success: function(data) {
+            $("#btn_add").hide();
+            $("#btn_edit").show();
+            $("#c4").html("Edit yor address below");
+            window.location.href ="#c4";
+            $("#firstname").val(data.name);
+            $("#streetaddress").val(data.streetaddress);
+            $("#appartment").val(data.appartment);
+            $("#towncity").val(data.city);
+            $("#postcodezip").val(data.zip);
+            $("#phone").val(data.phone);
+            $("#emailaddress").val(data.email);
+            $("#idd").val(id);
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    });
+</script>
+    {% endblock  %}
+  </body>
+
+</html>

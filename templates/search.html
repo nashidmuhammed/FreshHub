@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block content %}
+    <title>Search</title>
+</head>
+<body>
+<form method="get">
+    {{filter.form.as_p }}
+    <button type="submit">Search</button>
+</form>
+<ul>
+    {% for product in filter.qs %}
+    <li>{{ product.pname }} - {{ product.price}}</li>
+    <li>
+
+        <a  class="img-prod"><img  class="img-fluid" src="{{product.pimage.url}}" alt="Colorlib Template">
+    						<span class="status">30%</span>
+    						<div class="overlay"></div>
+    					</a>
+
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
+
+</body>
+</html>
